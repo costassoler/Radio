@@ -1,6 +1,6 @@
 import ugradio
 import numpy as np
-import matplitlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 def collect(volt_range, blocks, numrepeat, name):
