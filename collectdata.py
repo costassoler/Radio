@@ -8,7 +8,7 @@ def collect(volt_range, blocks, numrepeat, name):
 
     for i in range (0,numrepeat):
         data = ugradio.pico.capture_data(volt_range, divisor=10, dual_mode=True, nblocks=blocks)
-        np.savetxt(name+i,data)
+        np.savetxt(name+str(i),data)
 
 def insert_upper(volt_range):
     data = ugradio.pico.capture_data(volt_range, divisor=10, dual_mode=True)
