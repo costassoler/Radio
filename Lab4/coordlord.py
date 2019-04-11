@@ -1,3 +1,4 @@
+import ugradio
 import numpy as np
 from __future__ import division
 
@@ -18,7 +19,6 @@ def HMS(hour, minute, second):
     decimal = 15*(hour + minute + second)
     return decimal
   
-    
 def DMS(degree, arcmin, arcsec):
     """
     Converts dec from degree-minute-second notation to decimal notation.  
@@ -95,4 +95,56 @@ def equ2gal(RA, dec):
     if l < 0:
         l = l + 360
     return (l, b)
+
+def gal2hor(l, b, jd=None):
+    """
+    Converts galactic coordinates to horizontal coordinates at Leuschner. 
+    
+    Arguments:
+    l, Galactic longitude (degrees).
+    b, Galactic latitude (degrees).
+    jd, Julian date (default=now).
+    
+    Returns: 
+    alt, Horizontal altitude (degrees)
+    az, Topocentric azimuth (degrees)
+    """
+    equ = equ2gal(l,b)
+    leo = ugradio.leo
+    hor = ugradio.coord.get_altaz(equ[0], equ[1], jd=jd, lat=leo.lat, lon=leo.lon, alt=leo.alt)
+    alt = hor[0]
+    if alt < 0:
+        alt = alt + 90
+    if alt > 90:
+        alt = alt - 90
+    azi = hor[1]
+    if azi < 0:
+        azi = alt + 360
+    if azi > 360:
+        azi = azi - 360
+    return (alt, azi)
+
+def danger(l, b):
+    """
+    Determines if given galtctic coordinates are safe or out of range for Leuschner. 
+    
+    Arguments:
+    l, Galactic longitude (degrees).
+    b, Galactic latitude (degrees).
+    
+    Returns:
+    alt, Horizontal altitude (degrees).
+    azi, Horizontal azimuth (degrees).
+    """
+    min_alt, max_alt = 15, 85
+    min_azi, max_azi = 5, 350
+    hor = gal2hor(l, b)
+    alt, azi = hor[0], hor[1]
+    print '(alt, azi) =',hor
+    if alt < min_alt or alt > max_alt:
+        print 'Coord Lord says: ALT OUT OF RANGE. DO NOT ATTEMPT POINTING.'
+    if azi < min_azi or azi > max_azi:
+        print 'Coord Lord says: AZI OUR OF RANGE. DO NOT ATTEMPT POINTING.'
+    if alt > min_alt and alt < max_alt and azi > min_azi and azi < max_azi:
+        print 'Coord Lord says: SAFE. GO FORTH AND POINT.'
 
