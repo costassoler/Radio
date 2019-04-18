@@ -15,15 +15,15 @@ def color(alt, az):
     flalt = alt.flatten()
     flaz = az.flatten()
 
-    min_alt, max_alt = 15, 85
-    min_azi, max_azi = 5, 350
+    min_alt, max_alt = 15, 85  #Obtained from ugradio.leusch
+    min_az, max_az = 5, 350    #Obtained from ugradio.leusch
     
     col = ['b']*len(flalt)
     col = np.array(col)
     col[np.where(flalt<min_alt)] = 'r'
-    col[np.where(flaz<min_azi)] = 'r'
+    col[np.where(flaz<min_az)] = 'r'
     col[np.where(flalt>max_alt)] = 'r'
-    col[np.where(flaz>max_azi)] = 'r'
+    col[np.where(flaz>max_az)] = 'r'
     
     ind = np.where(col == 'r')
    
