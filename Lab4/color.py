@@ -5,8 +5,8 @@ def color(alt, az):
     """
     Inputs altitude and azimuth arrays and determines which points lie in range for Leuschner.
     Arguments:
-    alt, altitude (array-like)
-    az, azimuth (array-like)
+    alt, altitude (array)
+    az, azimuth (array)
     Returns:
     col, color code for plotting (array-like)
     ind, indicies of out of range points (array-like)
